@@ -1,0 +1,90 @@
+{
+  "name": "ensurascript",
+  "displayName": "EnsuraScript",
+  "description": "Language support for EnsuraScript - programming by guarantees, not instructions",
+  "version": "0.1.0",
+  "publisher": "ensurascript",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ensurascript/ensura"
+  },
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "keywords": [
+    "ensurascript",
+    "ensura",
+    "ens",
+    "infrastructure",
+    "declarative",
+    "guarantees"
+  ],
+  "activationEvents": [
+    "onLanguage:ens"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "ens",
+        "aliases": [
+          "EnsuraScript",
+          "ensurascript",
+          "ensura",
+          "ens"
+        ],
+        "extensions": [
+          ".ens"
+        ],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icons/ens-light.svg",
+          "dark": "./icons/ens-dark.svg"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "ens",
+        "scopeName": "source.ens",
+        "path": "../shared/ensurascript.tmLanguage.json"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "ens",
+        "path": "./snippets/ensurascript.json"
+      }
+    ],
+    "configuration": {
+      "type": "object",
+      "title": "EnsuraScript",
+      "properties": {
+        "ensurascript.lspPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the ensura-lsp binary. If empty, will look for 'ensura-lsp' in PATH."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@types/vscode": "^1.75.0",
+    "typescript": "^5.0.0",
+    "@vscode/vsce": "^2.22.0"
+  }
+}

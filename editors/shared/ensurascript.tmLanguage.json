@@ -1,0 +1,136 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "ens",
+  "scopeName": "source.ens",
+  "displayName": "EnsuraScript",
+  "aliases": ["ensurascript", "ensura"],
+  "fileTypes": ["ens"],
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#keywords" },
+    { "include": "#conditions" },
+    { "include": "#handlers" },
+    { "include": "#resource-types" },
+    { "include": "#operators" },
+    { "include": "#numbers" },
+    { "include": "#identifiers" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.number-sign.ens",
+          "match": "#.*$"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.ens",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.ens",
+              "match": "\\\\."
+            },
+            {
+              "name": "variable.other.env.ens",
+              "match": "env:[A-Za-z_][A-Za-z0-9_]*"
+            },
+            {
+              "name": "variable.other.file.ens",
+              "match": "file:[^\"]*"
+            }
+          ]
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.control.ens",
+          "match": "\\b(ensure|on|with|requires|after|before|when|apply|as|in)\\b"
+        },
+        {
+          "name": "keyword.declaration.ens",
+          "match": "\\b(resource|policy|invariant|assume)\\b"
+        },
+        {
+          "name": "keyword.control.loop.ens",
+          "match": "\\b(for|each)\\b"
+        },
+        {
+          "name": "keyword.control.violation.ens",
+          "match": "\\b(violation|retry|notify)\\b"
+        },
+        {
+          "name": "keyword.control.parallel.ens",
+          "match": "\\b(parallel)\\b"
+        }
+      ]
+    },
+    "conditions": {
+      "patterns": [
+        {
+          "name": "support.function.condition.ens",
+          "match": "\\b(exists|encrypted|permissions|readable|writable|checksum|content|running|stopped|listening|healthy|reachable|status_code|tls|scheduled|backed_up|stable)\\b"
+        }
+      ]
+    },
+    "handlers": {
+      "patterns": [
+        {
+          "name": "entity.name.type.handler.ens",
+          "match": "\\b(AES:256|fs\\.native|posix|http\\.get|cron\\.native|process\\.native|service\\.native|backup\\.native|db\\.native)\\b"
+        },
+        {
+          "name": "variable.parameter.handler.ens",
+          "match": "\\b(key|mode|expected_status|expected)\\b"
+        }
+      ]
+    },
+    "resource-types": {
+      "patterns": [
+        {
+          "name": "storage.type.resource.ens",
+          "match": "\\b(file|directory|http|database|service|process|cron)\\b"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.comparison.ens",
+          "match": "(==|!=)"
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.ens",
+          "match": "\\b[0-9]+\\b"
+        }
+      ]
+    },
+    "identifiers": {
+      "patterns": [
+        {
+          "name": "variable.other.ens",
+          "match": "\\b(environment)\\b"
+        },
+        {
+          "name": "entity.name.function.policy.ens",
+          "match": "(?<=policy\\s+)[a-z_][a-z0-9_]*"
+        },
+        {
+          "name": "entity.name.tag.alias.ens",
+          "match": "(?<=as\\s+)[a-z_][a-z0-9_]*"
+        }
+      ]
+    }
+  }
+}

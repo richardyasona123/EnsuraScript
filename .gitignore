@@ -1,0 +1,56 @@
+# Binaries
+/ensura
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool
+*.out
+coverage.html
+
+# Go workspace file
+go.work
+
+# Dependency directories
+vendor/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build output
+bin/
+dist/
+
+# Local configuration
+*.local.md
+.env
+.env.local
+
+# Secrets (never commit these)
+*.pem
+*.key
+secrets.db
+
+# Node.js
+node_modules/
+
+# VS Code extension build
+editors/vscode/out/
+*.vsix
+
+# VitePress docs build
+docs/.vitepress/dist/
+docs/.vitepress/cache/

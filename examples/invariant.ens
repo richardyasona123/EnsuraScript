@@ -1,0 +1,21 @@
+# Invariant Example
+# This demonstrates collection enforcement with invariants
+
+# Invariant: all files in /secrets must be encrypted
+# Invariants are higher priority and violations are critical
+invariant {
+  for each file in directory "/secrets" {
+    ensure encrypted with AES:256 key "env:SECRET_KEY"
+  }
+}
+
+# Regular guarantees
+on file "/etc/myapp/config.yaml" {
+  ensure exists
+  ensure permissions with posix mode "0644"
+}
+
+on violation {
+  retry 2
+  notify "security"
+}

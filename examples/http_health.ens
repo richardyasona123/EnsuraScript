@@ -1,0 +1,19 @@
+# HTTP Health Check Example
+# This demonstrates monitoring HTTP endpoints
+
+resource http "https://api.example.com/health" as api_health
+resource http "https://auth.example.com/health" as auth_health
+
+# Ensure API is reachable and returns 200
+ensure reachable on http "https://api.example.com/health"
+ensure status_code on http "https://api.example.com/health" with http expected_status "200"
+
+# Ensure auth service is reachable with TLS
+ensure reachable on http "https://auth.example.com/health"
+ensure tls on http "https://auth.example.com/health"
+
+on violation {
+  retry 5
+  notify "oncall"
+  notify "slack-alerts"
+}

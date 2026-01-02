@@ -1,0 +1,115 @@
+{
+  "Resource Block": {
+    "prefix": "on",
+    "body": [
+      "on ${1|file,directory,http,database,service,process,cron|} \"${2:path}\" {",
+      "\t${0}",
+      "}"
+    ],
+    "description": "Create a resource context block"
+  },
+  "Ensure Exists": {
+    "prefix": "ensure-exists",
+    "body": "ensure exists",
+    "description": "Ensure resource exists"
+  },
+  "Ensure Encrypted": {
+    "prefix": "ensure-encrypted",
+    "body": "ensure encrypted with AES:256 key \"${1:env:SECRET_KEY}\"",
+    "description": "Ensure resource is encrypted with AES-256"
+  },
+  "Ensure Permissions": {
+    "prefix": "ensure-permissions",
+    "body": "ensure permissions with posix mode \"${1:0644}\"",
+    "description": "Ensure POSIX permissions"
+  },
+  "Ensure Reachable": {
+    "prefix": "ensure-reachable",
+    "body": "ensure reachable",
+    "description": "Ensure HTTP endpoint is reachable"
+  },
+  "Ensure Running": {
+    "prefix": "ensure-running",
+    "body": "ensure running",
+    "description": "Ensure service/process is running"
+  },
+  "Policy Definition": {
+    "prefix": "policy",
+    "body": [
+      "policy ${1:name}(${2:param}) {",
+      "\t${0}",
+      "}"
+    ],
+    "description": "Define a reusable policy"
+  },
+  "Apply Policy": {
+    "prefix": "apply",
+    "body": "apply ${1:policy_name}(\"${2:arg}\")",
+    "description": "Apply a policy"
+  },
+  "Violation Handler": {
+    "prefix": "violation",
+    "body": [
+      "violation {",
+      "\t${1|retry,notify|} ${0}",
+      "}"
+    ],
+    "description": "Define violation handler"
+  },
+  "For Each Loop": {
+    "prefix": "foreach",
+    "body": [
+      "for each ${1:item} in ${2:collection} {",
+      "\t${0}",
+      "}"
+    ],
+    "description": "Iterate over a collection"
+  },
+  "When Guard": {
+    "prefix": "when",
+    "body": "when environment == \"${1:production}\"",
+    "description": "Add environment guard"
+  },
+  "File Resource": {
+    "prefix": "file",
+    "body": [
+      "on file \"${1:path}\" {",
+      "\tensure exists",
+      "\tensure permissions with posix mode \"${2:0644}\"",
+      "}"
+    ],
+    "description": "File resource with common guarantees"
+  },
+  "Secure File": {
+    "prefix": "secure-file",
+    "body": [
+      "on file \"${1:secrets.db}\" {",
+      "\tensure exists",
+      "\tensure encrypted with AES:256 key \"${2:env:SECRET_KEY}\"",
+      "\tensure permissions with posix mode \"0600\"",
+      "}"
+    ],
+    "description": "Secure file with encryption and restricted permissions"
+  },
+  "HTTP Health Check": {
+    "prefix": "http-health",
+    "body": [
+      "on http \"${1:https://api.example.com/health}\" {",
+      "\tensure reachable",
+      "\tensure status_code with http expected_status \"200\"",
+      "\tensure tls",
+      "}"
+    ],
+    "description": "HTTP endpoint health check"
+  },
+  "Service Monitor": {
+    "prefix": "service",
+    "body": [
+      "on service \"${1:nginx}\" {",
+      "\tensure running",
+      "\tensure healthy",
+      "}"
+    ],
+    "description": "Service monitoring block"
+  }
+}

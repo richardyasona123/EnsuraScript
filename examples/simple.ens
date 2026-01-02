@@ -1,0 +1,15 @@
+# Simple EnsuraScript Example
+# This demonstrates basic file security guarantees
+
+resource file "secrets.db"
+
+on file "secrets.db" {
+  ensure exists
+  ensure encrypted with AES:256 key "env:SECRET_KEY"
+  ensure permissions with posix mode "0600"
+}
+
+on violation {
+  retry 2
+  notify "ops"
+}

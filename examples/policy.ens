@@ -1,0 +1,24 @@
+# Policy Reuse Example
+# This demonstrates how to define and apply reusable policies
+
+# Define a reusable security policy
+policy secure_file(key_ref) {
+  ensure encrypted with AES:256 key key_ref
+  ensure permissions with posix mode "0600"
+}
+
+# Apply the policy to multiple files
+on file "secrets.db" {
+  ensure exists
+  apply secure_file("env:SECRET_KEY")
+}
+
+on file "credentials.json" {
+  ensure exists
+  apply secure_file("env:CRED_KEY")
+}
+
+on violation {
+  retry 3
+  notify "security-team"
+}

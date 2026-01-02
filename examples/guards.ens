@@ -1,0 +1,27 @@
+# Conditional Guards Example
+# This demonstrates environment-based conditional activation
+
+# Assumptions about the environment
+assume environment == "prod"
+
+resource file "secrets.db"
+
+on file "secrets.db" {
+  # Always ensure the file exists
+  ensure exists
+
+  # Only encrypt in production
+  ensure encrypted with AES:256 key "env:SECRET_KEY" when environment == "prod"
+
+  # Strict permissions in production, relaxed in dev
+  ensure permissions with posix mode "0600" when environment == "prod"
+  ensure permissions with posix mode "0644" when environment == "dev"
+}
+
+# Production-only health checks
+ensure reachable on http "https://api.example.com/health" when environment == "prod"
+
+on violation {
+  retry 3
+  notify "ops"
+}
