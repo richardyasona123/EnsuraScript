@@ -2,8 +2,8 @@
 
 > Programming by guarantees, not instructions.
 
-[![CI](https://github.com/ensurascript/ensura/actions/workflows/ci.yml/badge.svg)](https://github.com/ensurascript/ensura/actions/workflows/ci.yml)
-[![Documentation](https://github.com/ensurascript/ensura/actions/workflows/deploy-docs.yml/badge.svg)](https://ensurascript.github.io/EnsuraScript/)
+[![CI](https://github.com/GustyCube/EnsuraScript/actions/workflows/ci.yml/badge.svg)](https://github.com/GustyCube/EnsuraScript/actions/workflows/ci.yml)
+[![Documentation](https://github.com/GustyCube/EnsuraScript/actions/workflows/deploy-docs.yml/badge.svg)](https://ensurascript.gustycube.com/)
 
 EnsuraScript is an open-source, intent-first, "truth maintenance" language. You declare desired properties of your systems; the runtime satisfies and keeps them true.
 
@@ -21,8 +21,8 @@ EnsuraScript is an open-source, intent-first, "truth maintenance" language. You 
 
 ```bash
 # Clone and build
-git clone https://github.com/ensurascript/ensura.git
-cd ensura
+git clone https://github.com/GustyCube/EnsuraScript.git
+cd EnsuraScript
 go build -o ensura ./cmd/ensura
 
 # Optional: install to PATH
@@ -115,7 +115,7 @@ invariant {
 
 ## Documentation
 
-Full documentation is available at [ensurascript.github.io/EnsuraScript](https://ensurascript.github.io/EnsuraScript/).
+Full documentation is available at [ensurascript.gustycube.com](https://ensurascript.gustycube.com/).
 
 ## Architecture
 
@@ -191,4 +191,4 @@ MIT License - see [LICENSE](LICENSE) for details.
 
 ## Contributing
 
-Contributions are welcome! Please read our contributing guidelines before submitting PRs.
+Contributions are welcome! Please read our [contributing guidelines](CONTRIBUTING.md) before submitting PRs.

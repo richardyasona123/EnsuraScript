@@ -13,7 +13,7 @@ const ensGrammar = JSON.parse(
 export default defineConfig({
   title: 'EnsuraScript',
   description: 'Programming by guarantees, not instructions',
-  base: '/EnsuraScript/',
+  base: '/',
   ignoreDeadLinks: true,
 
   appearance: 'dark', // Default to dark mode with toggle
