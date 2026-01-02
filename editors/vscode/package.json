@@ -23,9 +23,6 @@
     "declarative",
     "guarantees"
   ],
-  "activationEvents": [
-    "onLanguage:ens"
-  ],
   "main": "./out/extension.js",
   "contributes": {
     "languages": [
@@ -51,7 +48,7 @@
       {
         "language": "ens",
         "scopeName": "source.ens",
-        "path": "../shared/ensurascript.tmLanguage.json"
+        "path": "./grammars/ensurascript.tmLanguage.json"
       }
     ],
     "snippets": [
@@ -73,10 +70,11 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run compile",
+    "vscode:prepublish": "npm run sync-grammar && npm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "package": "vsce package"
+    "package": "vsce package",
+    "sync-grammar": "node sync-grammar.js"
   },
   "dependencies": {
     "vscode-languageclient": "^9.0.1"
