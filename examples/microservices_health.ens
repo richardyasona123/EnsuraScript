@@ -1,0 +1,84 @@
+# Microservices Health Monitoring Example
+# Demonstrates: multiple HTTP checks, per-ensure violations, service dependencies
+
+# Authentication Service
+ensure reachable on http "https://auth.myapp.com/health"
+on violation {
+  retry 5
+  notify "auth-team"
+  notify "ops-oncall"
+}
+
+ensure status_code on http "https://auth.myapp.com/health" with http expected_status "200"
+on violation {
+  retry 3
+  notify "auth-team"
+}
+
+ensure tls on http "https://auth.myapp.com/health"
+on violation {
+  retry 1
+  notify "security-team"
+  notify "auth-team"
+}
+
+# User Service (depends on auth)
+ensure reachable on http "https://users.myapp.com/health"
+on violation {
+  retry 5
+  notify "user-service-team"
+}
+
+ensure status_code on http "https://users.myapp.com/health" with http expected_status "200"
+on violation {
+  retry 3
+  notify "user-service-team"
+}
+
+# API Gateway
+ensure reachable on http "https://api.myapp.com/health"
+on violation {
+  retry 10
+  notify "platform-team"
+  notify "ops-oncall"
+}
+
+ensure status_code on http "https://api.myapp.com/health" with http expected_status "200"
+
+ensure tls on http "https://api.myapp.com/health"
+
+# Payment Service (critical)
+ensure reachable on http "https://payments.myapp.com/health"
+on violation {
+  retry 20
+  notify "payments-team"
+  notify "ops-oncall"
+  notify "cto"
+}
+
+ensure status_code on http "https://payments.myapp.com/health" with http expected_status "200"
+on violation {
+  retry 15
+  notify "payments-team"
+  notify "cto"
+}
+
+ensure tls on http "https://payments.myapp.com/health"
+on violation {
+  retry 1
+  notify "security-team"
+  notify "payments-team"
+}
+
+# Analytics Service (non-critical)
+ensure reachable on http "https://analytics.myapp.com/health"
+on violation {
+  retry 2
+  notify "analytics-team"
+}
+
+# Global fallback
+on violation {
+  retry 3
+  notify "platform-team"
+}

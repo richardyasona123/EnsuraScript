@@ -1,0 +1,72 @@
+# EnsuraScript Example: Per-Ensure Violation Handling
+# This example demonstrates per-ensure violation handlers
+# which override the global violation handler for specific guarantees.
+
+# Global violation handler (default for all ensures)
+on violation {
+  retry 2
+  notify "ops"
+}
+
+# Example 1: Critical file with aggressive retry
+resource file "critical_config.json"
+ensure exists on file "critical_config.json"
+on violation {
+  retry 10
+  notify "critical"
+}
+
+# Example 2: Security-sensitive encryption with specific notification
+resource file "secrets.db"
+ensure exists on file "secrets.db"
+
+ensure encrypted on file "secrets.db" with AES:256 key "env:SECRET_KEY"
+on violation {
+  retry 5
+  notify "security"
+}
+
+ensure permissions on file "secrets.db" with posix mode "0600"
+on violation {
+  retry 3
+  notify "security"
+}
+
+# Example 3: HTTP endpoint with custom retry logic
+resource http "https://api.example.com/health"
+ensure reachable on http "https://api.example.com/health"
+on violation {
+  retry 15
+  notify "platform"
+}
+
+# Example 4: Database with minimal retries (fail fast)
+resource file "database.db"
+ensure exists on file "database.db"
+on violation {
+  retry 1
+  notify "database"
+}
+
+# Example 5: Multiple files with different violation strategies
+resource file "temp_cache.dat"
+ensure exists on file "temp_cache.dat"
+on violation {
+  retry 0
+  notify "monitoring"
+}
+
+resource file "important_log.txt"
+ensure exists on file "important_log.txt"
+on violation {
+  retry 7
+  notify "logs"
+}
+
+# Example 6: Conditional guarantee with per-ensure violation handler
+resource file "prod_only_config.yaml"
+ensure exists on file "prod_only_config.yaml" when environment == "prod"
+on violation {
+  retry 20
+  notify "critical"
+}

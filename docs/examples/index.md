@@ -21,8 +21,6 @@ on violation {
 }
 ```
 
-[Full Example →](/examples/file-security)
-
 ## HTTP Health Monitoring
 
 Monitor HTTP endpoints for availability:
@@ -30,17 +28,17 @@ Monitor HTTP endpoints for availability:
 ```ens
 resource http "https://api.example.com/health" as api_health
 
-ensure reachable on http "https://api.example.com/health"
-ensure status_code on http "https://api.example.com/health" with http expected_status "200"
-ensure tls on http "https://api.example.com/health"
+on http "https://api.example.com/health" {
+  ensure reachable
+  ensure status_code with http.get expected_status "200"
+  ensure tls
+}
 
 on violation {
   retry 5
   notify "oncall"
 }
 ```
-
-[Full Example →](/examples/http-monitoring)
 
 ## Policy Reuse
 
@@ -63,8 +61,6 @@ on file "credentials.json" {
 }
 ```
 
-[Full Example →](/examples/policy-reuse)
-
 ## Collection Enforcement
 
 Enforce guarantees across all files in a directory:
@@ -74,6 +70,22 @@ invariant {
   for each file in directory "/secrets" {
     ensure encrypted with AES:256 key "env:SECRET_KEY"
   }
+}
+```
+
+## Scheduled Tasks
+
+Set up automated cron jobs:
+
+```ens
+# Daily backup at 2 AM
+on cron "daily_backup" {
+  ensure scheduled with cron.native schedule "0 2 * * *" command "/usr/local/bin/backup.sh"
+}
+
+# Health check every 15 minutes
+on cron "health_monitor" {
+  ensure scheduled with cron.native schedule "*/15 * * * *" command "/usr/local/bin/health_check.sh"
 }
 ```
 

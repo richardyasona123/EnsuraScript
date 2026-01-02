@@ -1,0 +1,52 @@
+# Backup Automation Example
+# Demonstrates: cron scheduling, policies, file security, guards
+
+# Reusable policy for critical data files
+policy secure_critical_file(key_ref) {
+  ensure exists
+  ensure encrypted with AES:256 key key_ref
+  ensure permissions with posix mode "0600"
+}
+
+# Database backup file
+on file "/var/backups/db_backup.sql.enc" {
+  apply secure_critical_file("env:BACKUP_KEY")
+}
+on violation {
+  retry 5
+  notify "backup-team"
+}
+
+# Application data backup
+on file "/var/backups/app_data.tar.gz.enc" {
+  apply secure_critical_file("env:BACKUP_KEY")
+}
+
+# Backup rotation cron job
+on cron "database_backup_job" {
+  ensure scheduled with cron schedule "0 2 * * *" command "/usr/local/bin/backup-db.sh"
+}
+on violation {
+  retry 3
+  notify "backup-team"
+}
+
+# Weekly backup cleanup
+on cron "backup_cleanup" {
+  ensure scheduled with cron schedule "0 3 * * 0" command "/usr/local/bin/cleanup-old-backups.sh"
+}
+
+# Backup verification job (runs every 6 hours)
+on cron "backup_verification" {
+  ensure scheduled with cron schedule "0 */6 * * *" command "/usr/local/bin/verify-backups.sh"
+}
+on violation {
+  retry 1
+  notify "backup-team"
+  notify "security-team"
+}
+
+on violation {
+  retry 2
+  notify "ops"
+}

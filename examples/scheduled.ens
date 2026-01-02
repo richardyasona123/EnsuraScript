@@ -1,0 +1,36 @@
+# EnsuraScript Example: Scheduled Tasks (Cron)
+# This example demonstrates using the cron resource type
+# to ensure scheduled tasks are configured.
+#
+# Note: The cron.native handler is automatically selected for
+# the "scheduled" condition on cron resources, so no explicit
+# "with" clause is needed.
+
+# Example 1: Daily backup at 2 AM
+resource cron "daily_backup"
+# Arguments are passed directly to the handler
+ensure scheduled on cron "daily_backup" with cron schedule "0 2 * * *" command "/usr/local/bin/backup.sh"
+
+# Example 2: Hourly health check
+resource cron "hourly_health_check"
+ensure scheduled on cron "hourly_health_check" with cron schedule "0 * * * *" command "/usr/local/bin/health_check.sh"
+
+# Example 3: Weekly log rotation (Sunday at midnight)
+resource cron "weekly_log_rotation"
+ensure scheduled on cron "weekly_log_rotation" with cron schedule "0 0 * * 0" command "/usr/sbin/logrotate /etc/logrotate.conf"
+
+# Example 4: Monthly cleanup (first day of month at 3 AM)
+resource cron "monthly_cleanup"
+on cron "monthly_cleanup" {
+  ensure scheduled with cron schedule "0 3 1 * *" command "/usr/local/bin/cleanup_old_files.sh"
+}
+
+# Example 5: Environment-specific scheduling
+resource cron "prod_monitoring"
+ensure scheduled on cron "prod_monitoring" with cron schedule "*/5 * * * *" command "/usr/local/bin/monitor.sh" when environment == "prod"
+
+# Global violation handler for all scheduled tasks
+on violation {
+  retry 3
+  notify "ops"
+}

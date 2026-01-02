@@ -16,12 +16,24 @@ export default defineConfig({
   base: '/EnsuraScript/',
   ignoreDeadLinks: true,
 
+  appearance: 'dark', // Default to dark mode with toggle
+  lastUpdated: true,
+
   markdown: {
-    languages: [ensGrammar]
+    languages: [ensGrammar],
+    theme: {
+      light: 'github-light',
+      dark: 'github-dark'
+    },
+    lineNumbers: true
   },
 
   head: [
-    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }]
+    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }],
+    ['meta', { name: 'theme-color', content: '#2563eb' }],
+    ['meta', { name: 'og:type', content: 'website' }],
+    ['meta', { name: 'og:title', content: 'EnsuraScript' }],
+    ['meta', { name: 'og:description', content: 'Programming by guarantees, not instructions' }]
   ],
 
   themeConfig: {
@@ -29,9 +41,10 @@ export default defineConfig({
 
     nav: [
       { text: 'Guide', link: '/guide/getting-started' },
+      { text: 'Learn', link: '/learn/' },
       { text: 'Reference', link: '/reference/syntax' },
       { text: 'Examples', link: '/examples/' },
-      { text: 'GitHub', link: 'https://github.com/ensurascript/ensura' }
+      { text: 'GitHub', link: 'https://github.com/GustyCube/EnsuraScript' }
     ],
 
     sidebar: {
@@ -54,11 +67,48 @@ export default defineConfig({
           ]
         }
       ],
+      '/learn/': [
+        {
+          text: 'Getting Started',
+          items: [
+            { text: 'Overview', link: '/learn/' },
+            { text: 'Installation', link: '/learn/installation' },
+            { text: 'Your First Guarantee', link: '/learn/first-guarantee' }
+          ]
+        },
+        {
+          text: 'Core Concepts',
+          items: [
+            { text: 'Understanding Resources', link: '/learn/resources' },
+            { text: 'Writing Guarantees', link: '/learn/guarantees' },
+            { text: 'Using Handlers', link: '/learn/handlers' }
+          ]
+        },
+        {
+          text: 'Advanced Features',
+          items: [
+            { text: 'Creating Policies', link: '/learn/policies' },
+            { text: 'Guards & Conditions', link: '/learn/guards' },
+            { text: 'Dependencies', link: '/learn/dependencies' },
+            { text: 'Collections & Invariants', link: '/learn/collections' },
+            { text: 'Violation Handling', link: '/learn/violations' }
+          ]
+        },
+        {
+          text: 'Deep Dives',
+          items: [
+            { text: 'Implication System', link: '/learn/implications' },
+            { text: 'Execution Model', link: '/learn/execution' }
+          ]
+        }
+      ],
       '/reference/': [
         {
           text: 'Language Reference',
           items: [
             { text: 'Syntax', link: '/reference/syntax' },
+            { text: 'Conditions', link: '/reference/conditions' },
+            { text: 'Handlers', link: '/reference/handlers' },
             { text: 'CLI Commands', link: '/reference/cli' }
           ]
         }
@@ -74,12 +124,12 @@ export default defineConfig({
     },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/ensurascript/ensura' }
+      { icon: 'github', link: 'https://github.com/GustyCube/EnsuraScript' }
     ],
 
     footer: {
       message: 'Released under the MIT License.',
-      copyright: 'Copyright © 2024 EnsuraScript'
+      copyright: 'Copyright © 2026 GustyCube'
     },
 
     search: {

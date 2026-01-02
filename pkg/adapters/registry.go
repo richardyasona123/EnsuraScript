@@ -3,6 +3,7 @@ package adapters
 
 import (
 	"github.com/ensurascript/ensura/pkg/adapters/aes"
+	"github.com/ensurascript/ensura/pkg/adapters/cron"
 	"github.com/ensurascript/ensura/pkg/adapters/fs"
 	"github.com/ensurascript/ensura/pkg/adapters/http"
 	"github.com/ensurascript/ensura/pkg/adapters/posix"
@@ -24,6 +25,9 @@ func NewDefaultRegistry() *runtime.HandlerRegistry {
 
 	// Register HTTP handler
 	registry.Register(http.New())
+
+	// Register cron handler
+	registry.Register(cron.New())
 
 	return registry
 }

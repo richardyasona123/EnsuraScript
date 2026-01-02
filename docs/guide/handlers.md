@@ -67,8 +67,22 @@ HTTP endpoint checking.
 
 ```ens
 ensure reachable on http "https://api.example.com/health"
-ensure status_code on http "https://api.example.com/health" with http expected_status "200"
+ensure status_code on http "https://api.example.com/health" with http.get expected_status "200"
 ensure tls on http "https://api.example.com/health"
+```
+
+### cron.native
+
+Cron scheduling for Linux and macOS.
+
+**Conditions:** scheduled
+
+**Arguments:**
+- `schedule` - Cron schedule expression (e.g., "0 2 * * *")
+- `command` - Command to execute
+
+```ens
+ensure scheduled on cron "backup_job" with cron.native schedule "0 2 * * *" command "/usr/local/bin/backup.sh"
 ```
 
 ## Handler Selection
@@ -87,6 +101,7 @@ If you don't specify a handler with `with`, EnsuraScript uses the default handle
 | reachable | http.get |
 | status_code | http.get |
 | tls | http.get |
+| scheduled | cron.native |
 
 ## Secret References
 

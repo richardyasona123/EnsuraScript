@@ -66,6 +66,7 @@ type ResourceRef struct {
 	ResourceType string // file, directory, http, etc.
 	Path         string // the resource path (if inline)
 	Alias        string // the alias (if referencing by alias)
+	IsIterator   bool   // true if this is a for-each iterator placeholder
 }
 
 func (r *ResourceRef) expressionNode()       {}

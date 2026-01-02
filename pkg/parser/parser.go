@@ -215,6 +215,18 @@ func (p *Parser) parseEnsureStmt() *ast.EnsureStmt {
 	for {
 		switch {
 		case p.peekTokenIs(lexer.ON):
+			// Check if this is "on violation" or "on <resource>"
+			if stmt.Subject != nil {
+				// Already have a subject, check if this is "on violation"
+				p.nextToken() // consume 'on'
+				if p.peekTokenIs(lexer.ON_VIOLATION) || (p.peekTokenIs(lexer.IDENT) && p.peekToken.Literal == "violation") {
+					p.nextToken() // consume 'violation'
+					stmt.ViolationHandler = p.parseViolationHandlerBlock()
+					return stmt
+				}
+				// Not a violation handler, backtrack by returning
+				return stmt
+			}
 			p.nextToken()
 			p.nextToken()
 			stmt.Subject = p.parseResourceRef()
@@ -264,10 +276,14 @@ func (p *Parser) parseHandlerSpec() *ast.HandlerSpec {
 	}
 
 	// with <handler_name> [key value ...]
-	if !p.expectPeek(lexer.IDENT) {
+	// Handler names can be identifiers OR resource type keywords (http, cron, etc.)
+	p.nextToken()
+	if p.curTokenIs(lexer.IDENT) || p.curTokenIs(lexer.HTTP) || p.curTokenIs(lexer.CRON) {
+		spec.Name = p.curToken.Literal
+	} else {
+		p.addError(fmt.Sprintf("expected handler name, got %s", p.curToken.Type))
 		return nil
 	}
-	spec.Name = p.curToken.Literal
 
 	// Check for colon-separated handler name (e.g., AES:256)
 	if p.peekTokenIs(lexer.COLON) {
@@ -372,6 +388,33 @@ func (p *Parser) parseOnViolationBlock(pos lexer.Position) *ast.OnViolationBlock
 	}
 
 	return block
+}
+
+func (p *Parser) parseViolationHandlerBlock() *ast.ViolationHandler {
+	handler := &ast.ViolationHandler{Position: p.curToken.Pos}
+
+	if !p.expectPeek(lexer.LBRACE) {
+		return nil
+	}
+
+	p.nextToken()
+
+	for !p.curTokenIs(lexer.RBRACE) && !p.curTokenIs(lexer.EOF) {
+		switch p.curToken.Type {
+		case lexer.RETRY:
+			if p.expectPeek(lexer.NUMBER) {
+				n, _ := strconv.Atoi(p.curToken.Literal)
+				handler.Retry = n
+			}
+		case lexer.NOTIFY:
+			if p.expectPeek(lexer.STRING) {
+				handler.Notify = append(handler.Notify, p.curToken.Literal)
+			}
+		}
+		p.nextToken()
+	}
+
+	return handler
 }
 
 func (p *Parser) parseBlockStatements() []ast.Statement {

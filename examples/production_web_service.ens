@@ -1,0 +1,49 @@
+# Production Web Service Example
+# Demonstrates: guards, per-ensure violations, HTTP monitoring, file security
+
+assume environment == "prod"
+
+# Secure configuration files
+on file "/etc/myapp/config.yaml" {
+  ensure exists
+  ensure permissions with posix mode "0644"
+}
+
+on file "/etc/myapp/secrets.json" {
+  ensure exists
+  ensure encrypted with AES:256 key "env:APP_SECRET_KEY" when environment == "prod"
+  ensure permissions with posix mode "0600" when environment == "prod"
+}
+on violation {
+  retry 10
+  notify "security-team"
+}
+
+# API health monitoring with per-ensure violation handling
+ensure reachable on http "https://api.myapp.com/health"
+on violation {
+  retry 5
+  notify "ops-oncall"
+}
+
+ensure status_code on http "https://api.myapp.com/health" with http expected_status "200"
+on violation {
+  retry 3
+  notify "ops-oncall"
+  notify "slack-alerts"
+}
+
+ensure tls on http "https://api.myapp.com/health" when environment == "prod"
+on violation {
+  retry 1
+  notify "security-team"
+}
+
+# Database health
+ensure reachable on http "https://db-proxy.myapp.com/health" when environment == "prod"
+
+# Global fallback for any unhandled violations
+on violation {
+  retry 2
+  notify "devops"
+}

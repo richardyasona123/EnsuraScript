@@ -251,13 +251,33 @@ func (b *Binder) bindForEachStmt(stmt *ast.ForEachStmt) *ast.ForEachStmt {
 	// Validate container reference
 	b.validateResourceRef(stmt.Container)
 
-	// Bind statements - they will reference an implicit item variable
+	// Create an implicit subject representing the iterator item
+	// This is a placeholder that will be resolved at runtime when iterating
+	iteratorSubject := &ast.ResourceRef{
+		Position:     stmt.Container.Position,
+		ResourceType: stmt.ItemType,
+		Path:         "__foreach_item__",
+		IsIterator:   true,
+	}
+
+	// Bind statements with the iterator as the implicit subject
 	var boundStatements []ast.Statement
 	for _, s := range stmt.Statements {
-		var dummy *ast.ResourceRef
-		boundStmt := b.bindStatement(s, &dummy)
-		if boundStmt != nil {
-			boundStatements = append(boundStatements, boundStmt)
+		switch es := s.(type) {
+		case *ast.EnsureStmt:
+			if es.Subject == nil {
+				es.Subject = iteratorSubject
+			}
+			boundStmt := b.bindEnsureStmt(es, &iteratorSubject)
+			if boundStmt != nil {
+				boundStatements = append(boundStatements, boundStmt)
+			}
+		default:
+			var lastSubject *ast.ResourceRef = iteratorSubject
+			boundStmt := b.bindStatement(s, &lastSubject)
+			if boundStmt != nil {
+				boundStatements = append(boundStatements, boundStmt)
+			}
 		}
 	}
 	stmt.Statements = boundStatements
